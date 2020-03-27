@@ -46,26 +46,10 @@ if (TYPEOFCODING == "--escape") {
 
     } else if (CODEDECODE == "--decode") {
         
+
         let decodedString = "";
-        let symbolCounter = 0;
-        // let i = 0;
-        
-        // if (codeString[i] != "#" && codeString[i] == codeString[i - 1]) {
-        //     symbolCounter++;
-        //     i++;
-        // } else {
-        //     if (symbolCounter > 1) {
-        //         let symbol = codeString[i - 1];
+        let symbolCounter = 1;
 
-        //         for (let j = 0; j < symbolCounter; j++) {
-        //             decodedString += symbol;
-        //         }
-        //         symbolCounter = 1;
-        //     } else {
-                
-        //     }
-
-        // }
         let prefer = "";
         let next = "";
         for (let j = 0; j < codeString.length; j++) {
@@ -78,7 +62,7 @@ if (TYPEOFCODING == "--escape") {
             }
 
             if (next != null) {
-                if (prefer == next) {
+                if (prefer === next) {
                     symbolCounter++;
                 } else if (prefer == "#") {
                     let count = Number(codeString[j + 2]);
@@ -87,10 +71,21 @@ if (TYPEOFCODING == "--escape") {
                     for (let m = 0; m < count + 4; m++) {
                         decodedString += symbol;
                     }
-                    j += 
+                    //aabbb#(5)gcc
+                    j += 4;
                 } else if (next == "#") {
-
-                } 
+                        let symbol = codeString[j];
+                        for (let n = 0; n < symbolCounter; n++) {
+                            decodedString += symbol;
+                        }
+                        symbolCounter = 1;
+                } else {
+                let symbol = codeString[j];
+                        for (let n = 0; n < symbolCounter; n++) {
+                            decodedString += symbol;
+                        }
+                        symbolCounter = 1;
+                }
             }
         }
 
