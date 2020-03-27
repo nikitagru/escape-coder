@@ -8,7 +8,7 @@ const CODEDECODE = process.argv[3];
 const INNER = process.argv[4];
 const OUTER = process.argv[5];
 
-let codeString = FS.readFileSync('in.txt').toString();
+let codeString = FS.readFileSync(INNER).toString();
 
 function encodeToEscape(codeString, symbolCount) {
     if (symbolCount < 4) {
@@ -25,17 +25,6 @@ function encodeToEscape(codeString, symbolCount) {
     }
 }
 
-function decodeFromEscape(symbol, count) {
-    if (count > 3) {
-        let decode;
-        for (let i = 0; i < count + 4; i++) {
-            decode += symbol;
-        }
-        return decode;
-    } else {
-
-    }
-}
 
 if (TYPEOFCODING == "--escape") {
 
@@ -56,23 +45,52 @@ if (TYPEOFCODING == "--escape") {
         FS.writeFileSync(OUTER, encodedString);
 
     } else if (CODEDECODE == "--decode") {
-        let decodedString;
-        let symbolCount = 1;
-        for (let i = 0; i < codeString; i++) {
-            if (codeString[i] == "#") {
-                if (symbolCount != 1) {
-                    for (let i = 0; i < symbolCount; i++) {
-                        decodedString += codeString[i - 1];
-                    }
-                }
-                let countOfSymbol = Number(codeString[i + 2]);
-                decodedString = decodeFromEscape(codeString[i + 4], countOfSymbol);
-                i += 6;
-                symbolCount = 1;
+        
+        let decodedString = "";
+        let symbolCounter = 0;
+        // let i = 0;
+        
+        // if (codeString[i] != "#" && codeString[i] == codeString[i - 1]) {
+        //     symbolCounter++;
+        //     i++;
+        // } else {
+        //     if (symbolCounter > 1) {
+        //         let symbol = codeString[i - 1];
+
+        //         for (let j = 0; j < symbolCounter; j++) {
+        //             decodedString += symbol;
+        //         }
+        //         symbolCounter = 1;
+        //     } else {
+                
+        //     }
+
+        // }
+        let prefer = "";
+        let next = "";
+        for (let j = 0; j < codeString.length; j++) {
+            prefer = codeString[j];
+            
+            if (j != codeString.length - 1) {
+                next = codeString[j + 1];
             } else {
-                if (codeString[i - 1] == codeString[i]) {
-                    symbolCount++;
-                }
+                next = null;
+            }
+
+            if (next != null) {
+                if (prefer == next) {
+                    symbolCounter++;
+                } else if (prefer == "#") {
+                    let count = Number(codeString[j + 2]);
+                    let symbol = codeString[j + 4];
+                    
+                    for (let m = 0; m < count + 4; m++) {
+                        decodedString += symbol;
+                    }
+                    j += 
+                } else if (next == "#") {
+
+                } 
             }
         }
 
