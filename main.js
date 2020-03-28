@@ -33,7 +33,7 @@ if (TYPEOFCODING == "--escape") {
         let encodedString = "";
         let symbolCounter = 1;
 
-        for (let i = 1; i < codeString.length; i++) {
+        for (let i = 1; i < codeString.length + 1; i++) {
             if (codeString[i-1] == codeString[i]) {
                 symbolCounter++;
             } else {
@@ -42,7 +42,7 @@ if (TYPEOFCODING == "--escape") {
             }
         }
 	
-        FS.writeFileSync(OUTER, encodedString);
+        FS.writeFileSync("out.txt", encodedString);
 
     } else if (CODEDECODE == "--decode") {
         
@@ -65,11 +65,21 @@ if (TYPEOFCODING == "--escape") {
                 if (prefer === next) {
                     symbolCounter++;
                 } else if (prefer == "#") {
-                    let count = Number(codeString[j + 2]);
-                    let symbol = codeString[j + 4];
+                    let count = "";
+                    let symbol = codeString.indexOf(')', j);
+                    let temp = symbol - j;
+
+                    if (temp == 3) {
+                        count = codeString[j + 2];
+                    } else {
+                        for (temp; temp != 3; temp--) {
+                            count += codeString[temp - 2];
+                        }
+                    }
+                    count = Number(count);
                     
                     for (let m = 0; m < count + 4; m++) {
-                        decodedString += symbol;
+                        decodedString += codeString[symbol + 1];
                     }
                     //aabbb#(5)gcc
                     j += 4;
@@ -88,10 +98,12 @@ if (TYPEOFCODING == "--escape") {
                 }
             }
         }
-
+        FS.writeFileSync("out.txt", decodedString);
     }
 
 } else if (TYPEOFCODING == "--jump") {
+
+    if (CODEDECODE == "") {}
 
 } else {
     console.log("InvalidTypeOfCoding")
